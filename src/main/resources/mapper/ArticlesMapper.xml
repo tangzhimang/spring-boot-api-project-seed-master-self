@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.ArticlesMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Articles">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="article_id" jdbcType="VARCHAR" property="articleId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="article_date" jdbcType="DATE" property="articleDate" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <select id="getArticles"
+  	resultMap="BaseResultMap">
+  	select * from articles order by article_date desc
+  </select>
+</mapper>
