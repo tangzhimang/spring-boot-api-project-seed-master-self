@@ -3,9 +3,13 @@ import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.Articles;
 import com.company.project.service.ArticlesService;
+import com.company.project.service.StorageService;
 import com.company.project.util.HTMLSpirit;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +34,17 @@ import java.util.Map;
 public class ArticlesController {
     @Resource
     private ArticlesService articlesService;
+    @Resource
+    private StorageService storageService;
+    
+    
+    private static final String PROJECT_PATH = System.getProperty("user.dir");// 项目在硬盘上的基础路径
+	private static final String TEMPLATE_FILE_PATH = PROJECT_PATH + "/src/test/resources/generator/template";// 模板位置
+
+	private static final String JAVA_PATH = "/src/main/java"; // java文件路径
+	private static final String RESOURCES_PATH = "/src/main/resources";// 资源文件路径
+	
+	private static final String IMAGE_RESOURCES_PATH = "/src/main/resources/images";
 
     @PostMapping("/add")
     public Result add(Articles articles) {
@@ -113,6 +130,8 @@ public class ArticlesController {
          // 获取文件的后缀名
          String suffixName = fileName.substring(fileName.lastIndexOf("."));
          System.out.println("上传的后缀名为：" + suffixName);
+         
+         storageService.store(file);
 
 		return ResultGenerator.genSuccessResult();
     	
